@@ -9,7 +9,8 @@
   "author": "Jan Schaack",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
     "socket.io": "^4.2.0"
   }
 }
