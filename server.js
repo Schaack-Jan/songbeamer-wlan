@@ -1,21 +1,37 @@
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
+const express = require('express')
+const bodyParser = require('body-parser')
 
+// Create a new instance of express
+const app = express()
 
-var io = require('socket.io')(server);
+// Tell express to use the body-parser middleware and to not parse extended bodies
+app.use(bodyParser.urlencoded({ extended: false }))
 
-var port = process.env.PORT || 80;
-server.listen(port, function () {
-	console.log('Webserver läuft auf Port %d', port);
-});
+app.get('/', function (req, res) {
+	res.send("Hello World");
+})
 
-app.use(express.static(__dirname + '/public'));
+app.get('/check', function (req, res) {
+	console.log("Client connected");
+	res.status(200).send('OK');
+})
 
-io.on('connection', function (socket) {
-	socket.on('new page', function (data) {
-		socket.broadcast.emit('new page', {
-			message: data
-		});
-	});
-});
+app.post('/send', function (req, res) {
+  const body = req.body
+  res.set('Content-Type', 'text/plain')
+  console.log(body);
+  res.send(`You sent: ${body} to Express`)
+})
+
+app.get('*', function (req, res) {
+	res.status(404).send('Not found');
+})
+
+// Tell our app to listen on port 3000
+app.listen(80, function (err) {
+  if (err) {
+    throw err
+  }
+
+  console.log('Server started on port 80')
+})
