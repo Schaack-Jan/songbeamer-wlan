@@ -3,12 +3,17 @@ const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const fs = require('fs')
+const WebSocket = require('ws')
 
 // Create a new instance of express
 const app = express()
 
+// Websocket Instance
+const wss = new WebSocket.Server({port: 3030})
+
 // Tell express to use the body-parser middleware and to not parse extended bodies
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static(__dirname+'/public'))
 app.use(fileUpload())
 
 fs.mkdir(path.join(__dirname, 'files'),
@@ -20,13 +25,19 @@ fs.mkdir(path.join(__dirname, 'files'),
 );
 
 app.get('/', function (req, res) {
-	res.send("Hello World");
-	console.log(__dirname);
+	const file = __dirname + "/files/songbeamer.txt"
+	res.sendFile(path.join(__dirname, 'resources/views/index.html'))
+	fs.watch(file, () => {
+		let fileContent = fs.readFileSync(file, 'utf-8').toString().split("\n")
+
+		wss.clients.forEach(client => {
+			client.send(JSON.stringify(fileContent));
+		})
+	})
 })
 
 app.get('/check', function (req, res) {
-	console.log("Client connected");
-	res.status(200).send('OK');
+	res.status(200).send('OK')
 })
 
 app.post('/send', function (req, res) {
@@ -34,14 +45,17 @@ app.post('/send', function (req, res) {
 		return res.status(400).send("No files were uploaded")
 	}
 	const file = req.files.songbeamer
-	const path = __dirname + "/files/" + file.name
-	const allowedExtension = ['.txt']
-	
-	file.mv(path, (err) => {
+	const dir = __dirname + "/files/" + file.name
+
+	if(fs.existsSync(dir)) {
+		fs.unlinkSync(dir);
+	}
+
+	file.mv(dir, function (err) {
 		if (err) {
-			console.log(err)
-			return res.send(500).send(err)
+			return res.status(500).send(err)
 		}
+		console.log("file uploaded")
 		return res.status(200)
 	})
 })
