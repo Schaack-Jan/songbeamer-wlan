@@ -27,6 +27,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
 
   function setSongtext(data) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('#output').html("");
+    console.log(data);
     data.forEach(function (value) {
       if (value.indexOf('SongBeamer DEMO') > -1) {
         return;

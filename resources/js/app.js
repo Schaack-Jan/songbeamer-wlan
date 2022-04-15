@@ -13,6 +13,7 @@ $(document).ready(() => {
 
 	function setSongtext(data) {
 		$('#output').html("");
+		console.log(data);
 		data.forEach(value => {
 			if (value.indexOf('SongBeamer DEMO') > -1) {
 				return;

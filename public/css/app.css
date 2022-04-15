@@ -466,6 +466,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .items-center {
   align-items: center;
 }
+.justify-center {
+  justify-content: center;
+}
 .rounded-lg {
   border-radius: 0.5rem;
 }

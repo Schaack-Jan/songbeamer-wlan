@@ -29,21 +29,26 @@ fs.mkdir(path.join(__dirname, 'files'),
 	}
 );
 const songbeamer = __dirname + "/files/songbeamer.txt"
+let songtext = []
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'resources/views/index.html'))
-	fs.watch(songbeamer, () => {
-		let fileContent = fs.readFileSync(songbeamer, 'utf-8').toString().split("\n")
-		io.sockets.emit('message', fileContent);
-		setTimeout(() => true, 100);
-	})
 })
 
 app.get('/songtext', (req, res) => {
-	res.send({ songtext: fs.readFileSync(songbeamer, 'utf-8').toString().split("\n") })
+	if (songtext.length <= 0) {
+		songtext = fs.readFileSync(songbeamer, 'utf-8').toString().split("\n")
+	}
+	res.send({ songtext: songtext })
 })
 
 app.get('/check', (req, res) => {
+	res.status(200).send('OK')
+})
+
+app.get('/test', (req, res) => {
+	songtext = [""+Date.now(), "Test"]
+	io.sockets.emit('message', songtext)
 	res.status(200).send('OK')
 })
 
@@ -62,11 +67,15 @@ app.post('/send', (req, res) => {
 		if (err) {
 			return res.status(500).send(err)
 		}
+
+		songtext = fs.read(songbeamer, 'utf-8').toString().split("\n")
+		io.sockets.emit('message', songtext);
+
 		console.log("file uploaded")
 		return res.status(200)
 	})
 })
 
 app.get('*', (req, res) => {
-	res.status(404).send('Not found');
+	res.status(404).send('Not found')
 })
