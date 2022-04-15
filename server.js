@@ -37,7 +37,9 @@ app.get('/', (req, res) => {
 
 app.get('/songtext', (req, res) => {
 	if (songtext.length <= 0) {
-		songtext = fs.readFileSync(songbeamer, 'utf-8').toString().split("\n")
+		if (fs.existsSync(songbeamer)) {
+			songtext = fs.readFileSync(songbeamer, 'utf-8').toString().split("\n")
+		}
 	}
 	res.send({ songtext: songtext })
 })
@@ -68,7 +70,7 @@ app.post('/send', (req, res) => {
 			return res.status(500).send(err)
 		}
 
-		songtext = fs.read(songbeamer, 'utf-8').toString().split("\n")
+		songtext = fs.readSync(songbeamer, 'utf-8').toString().split("\n")
 		io.sockets.emit('message', songtext);
 
 		console.log("file uploaded")
