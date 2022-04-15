@@ -4,9 +4,7 @@ const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const fs = require('fs')
-const http = require('http')
 const socket = require('socket.io')
-//const WebSocket = require('ws')
 
 // Create a new instance of express
 const app = express()
@@ -30,22 +28,26 @@ fs.mkdir(path.join(__dirname, 'files'),
 		}
 	}
 );
+const songbeamer = __dirname + "/files/songbeamer.txt"
 
-app.get('/', function (req, res) {
-	const file = __dirname + "/files/songbeamer.txt"
+app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'resources/views/index.html'))
-	fs.watch(file, () => {
-		let fileContent = fs.readFileSync(file, 'utf-8').toString().split("\n")
+	fs.watch(songbeamer, () => {
+		let fileContent = fs.readFileSync(songbeamer, 'utf-8').toString().split("\n")
 		io.sockets.emit('message', fileContent);
 		setTimeout(() => true, 100);
 	})
 })
 
-app.get('/check', function (req, res) {
+app.get('/songtext', (req, res) => {
+	res.send({ songtext: fs.readFileSync(songbeamer, 'utf-8').toString().split("\n") })
+})
+
+app.get('/check', (req, res) => {
 	res.status(200).send('OK')
 })
 
-app.post('/send', function (req, res) {
+app.post('/send', (req, res) => {
 	if (!req.files) {
 		return res.status(400).send("No files were uploaded")
 	}
@@ -65,6 +67,6 @@ app.post('/send', function (req, res) {
 	})
 })
 
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
 	res.status(404).send('Not found');
 })

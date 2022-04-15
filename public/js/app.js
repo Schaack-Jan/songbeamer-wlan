@@ -15,32 +15,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.$ = window.jquery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
-/*$(function () {
-	// Hilfsvariablen für HTML-Elemente werden mit Hilfe von JQuery gesetzt.
-	var $window = $(window);
-	  
-	// Socket.io Objekt anlegen
-	var socket = io();
-	
-	function sendSongText() {
-		var test = $('#songIn').val();
-		$('#songtext').html(test);
-		
-		socket.emit('new page', test);
-	}
-	
-	document.getElementById('songButton').addEventListener('click', sendSongText);
-
-	function setSongText(data) {
-		$('#songtext').html(data.message);
-	}
-
-	// Server schickt "new page": Neuen Liedtext anzeigen
-	socket.on('new page', function (data) {
-		setSongText(data);
-	});
-});*/
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   var socket = io();
 
@@ -52,6 +26,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
     });
   }
 
+  jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+    url: "/songtext",
+    success: function success(result) {
+      setSongtext(result.songtext);
+    }
+  });
   socket.on('message', function (data) {
     setSongtext(data);
   });

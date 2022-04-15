@@ -444,6 +444,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
 @media (prefers-color-scheme: dark) {
 
   .dark\:bg-gray-800 {
