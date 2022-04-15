@@ -15,14 +15,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.$ = window.jquery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
+
+if (localStorage.getItem('color-theme') === 'dark' || !('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark');
+}
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   var socket = io();
 
   function setSongtext(data) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('#output').html("");
     data.forEach(function (value) {
-      value = value.replace('SongBeamer DEMO', '');
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#output').append(value);
+      if (value.indexOf('SongBeamer DEMO') > -1) {
+        return;
+      }
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#output').append("<p class='py-2 md:py-1'>" + value + "</p>");
     });
   }
 
@@ -34,6 +44,39 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   });
   socket.on('message', function (data) {
     setSongtext(data);
+  });
+  var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+  if (localStorage.getItem('color-theme') === 'dark' || !('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    themeToggleLightIcon.classList.remove('hidden');
+  } else {
+    themeToggleDarkIcon.classList.remove('hidden');
+  }
+
+  var themeToggleBtn = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#theme-toggle');
+  var doc = jquery__WEBPACK_IMPORTED_MODULE_0___default()('html');
+  themeToggleBtn.click(function () {
+    themeToggleDarkIcon.classList.toggle('hidden');
+    themeToggleLightIcon.classList.toggle('hidden');
+
+    if (localStorage.getItem('color-theme')) {
+      if (localStorage.getItem('color-theme') === 'light') {
+        doc.addClass('dark');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        doc.removeClass('dark');
+        localStorage.setItem('color-theme', 'light');
+      }
+    } else {
+      if (doc.hasClass('dark')) {
+        doc.removeClass('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        doc.addClass('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    }
   });
 });
 
