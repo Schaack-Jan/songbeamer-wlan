@@ -1,15 +1,22 @@
+const PORT = 80
 const express = require('express')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const fs = require('fs')
-const WebSocket = require('ws')
+const http = require('http')
+const socket = require('socket.io')
+//const WebSocket = require('ws')
 
 // Create a new instance of express
 const app = express()
+const server = app.listen(PORT, () => {
+	console.log(`Listening on port ${PORT}`)
+	console.log(`http://localhost:${PORT}`)
+})
 
 // Websocket Instance
-const wss = new WebSocket.Server({port: 3030})
+const io = socket(server)
 
 // Tell express to use the body-parser middleware and to not parse extended bodies
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -29,10 +36,8 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, 'resources/views/index.html'))
 	fs.watch(file, () => {
 		let fileContent = fs.readFileSync(file, 'utf-8').toString().split("\n")
-
-		wss.clients.forEach(client => {
-			client.send(JSON.stringify(fileContent));
-		})
+		io.sockets.emit('message', fileContent);
+		setTimeout(() => true, 100);
 	})
 })
 
@@ -62,13 +67,4 @@ app.post('/send', function (req, res) {
 
 app.get('*', function (req, res) {
 	res.status(404).send('Not found');
-})
-
-// Tell our app to listen on port 3000
-app.listen(80, function (err) {
-  if (err) {
-    throw err
-  }
-
-  console.log('Server started on port 80')
 })

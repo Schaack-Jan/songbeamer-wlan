@@ -1,3 +1,4 @@
+'use strict';
 import $ from 'jquery';
 window.$ = window.jquery = $;
 
@@ -28,14 +29,9 @@ window.$ = window.jquery = $;
 });*/
 
 $(document).ready(() => {
-	const wsUrl = 'ws://127.0.0.1:3030';
-	const ws = new WebSocket(wsUrl);
-	ws.onopen = () => {
-		console.log('Connected to Websocket on ' + wsUrl);
-	}
+	const socket = io();
 
 	function setSongtext(data) {
-		data = JSON.parse(data);
 		$('#output').html("");
 		data.forEach(value => {
 			value = value.replace('SongBeamer DEMO', '');
@@ -43,7 +39,8 @@ $(document).ready(() => {
 		});
 	}
 
-	ws.onmessage = function (evt) {
-		setSongtext(evt.data);
-	}
+	socket.on('message', data => {
+		setSongtext(data);
+	});
+
 });

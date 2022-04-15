@@ -12,6 +12,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
+
+
 window.$ = window.jquery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
 /*$(function () {
 	// Hilfsvariablen für HTML-Elemente werden mit Hilfe von JQuery gesetzt.
@@ -40,15 +42,9 @@ window.$ = window.jquery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
 });*/
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
-  var wsUrl = 'ws://127.0.0.1:3030';
-  var ws = new WebSocket(wsUrl);
-
-  ws.onopen = function () {
-    console.log('Connected to Websocket on ' + wsUrl);
-  };
+  var socket = io();
 
   function setSongtext(data) {
-    data = JSON.parse(data);
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('#output').html("");
     data.forEach(function (value) {
       value = value.replace('SongBeamer DEMO', '');
@@ -56,9 +52,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
     });
   }
 
-  ws.onmessage = function (evt) {
-    setSongtext(evt.data);
-  };
+  socket.on('message', function (data) {
+    setSongtext(data);
+  });
 });
 
 /***/ }),
