@@ -6,6 +6,13 @@ const path = require('path')
 const fs = require('fs')
 const socket = require('socket.io')
 
+function getLogTime() {
+	date = new Date();
+	time = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()
+	time += " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+	return "["+time+"] "
+}
+
 // Create a new instance of express
 const app = express()
 const server = app.listen(PORT, () => {
@@ -48,9 +55,8 @@ app.get('/check', (req, res) => {
 	res.status(200).send('OK')
 })
 
-app.get('/test', (req, res) => {
-	songtext = [""+Date.now(), "Test"]
-	io.sockets.emit('message', songtext)
+app.get('/info', (req, res) => {
+
 	res.status(200).send('OK')
 })
 
@@ -59,22 +65,22 @@ app.post('/send', (req, res) => {
 		return res.status(400).send("No files were uploaded")
 	}
 	const file = req.files.songbeamer
-	const dir = __dirname + "/files/" + file.name
+	const filesize = file.data.length+" Bytes";
+	songtext = file.data.toString('utf8').split("\n")
 
-	if(fs.existsSync(dir)) {
-		fs.unlinkSync(dir);
+	if(fs.existsSync(songbeamer)) {
+		fs.unlinkSync(songbeamer);
 	}
 
-	file.mv(dir, function (err) {
+	file.mv(songbeamer, function (err) {
 		if (err) {
 			return res.status(500).send(err)
 		}
 
-		songtext = fs.readSync(songbeamer, 'utf-8').toString().split("\n")
-		io.sockets.emit('message', songtext);
+		io.sockets.emit('message', songtext)
+		console.log(getLogTime()+"Songbeamer File uploaded, "+filesize)
 
-		console.log("file uploaded")
-		return res.status(200)
+		return res.status(200).send("OK")
 	})
 })
 
