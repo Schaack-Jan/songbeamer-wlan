@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload')
 const path = require('path')
 const fs = require('fs')
 const socket = require('socket.io')
+const os = require('os')
 
 function getLogTime() {
 	date = new Date();
@@ -13,11 +14,23 @@ function getLogTime() {
 	return "["+time+"] "
 }
 
+const nets = os.networkInterfaces()
+let ip = null
+switch (true) {
+	case 'Ethernet' in nets:
+		ip = nets['Ethernet']
+		break
+	case 'eth0' in nets:
+		ip = nets['eth0']
+		break
+}
+ip = ip[0].address
+
 // Create a new instance of express
 const app = express()
 const server = app.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`)
-	console.log(`http://localhost:${PORT}`)
+	console.log(`Listening on http://${ip} Port ${PORT}`)
+	console.log(``)
 })
 
 // Websocket Instance
@@ -35,6 +48,7 @@ fs.mkdir(path.join(__dirname, 'files'),
 		}
 	}
 );
+
 const songbeamer = __dirname + "/files/songbeamer.txt"
 let songtext = []
 
@@ -56,8 +70,7 @@ app.get('/check', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-
-	res.status(200).send('OK')
+	res.status(200).send('Server IP: '+ip)
 })
 
 app.post('/send', (req, res) => {

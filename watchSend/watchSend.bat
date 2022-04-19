@@ -15,7 +15,6 @@ goto execution
 
 :start
 set curl=%cd%\curl\curl.exe
-set watchexec=%cd%\watchexec.exe
 set env=%cd%\.env
 
 :execution
@@ -25,7 +24,6 @@ if not defined server (
 
 if exist %env% (
     if exist %curl% (
-        if exist %watchexec% (
             if not defined rv (
                  goto checkServer
             )
@@ -39,9 +37,6 @@ if exist %env% (
             ) else (
                 echo Der Server '%server%' ist nicht erreichbar
             )
-        ) else (
-            echo watchexec konnte nicht gefunden werden.
-        )
     ) else (
         echo Curl konnte nicht gefunden werden.
     )
