@@ -1,0 +1,15 @@
+image: registry.lighthouse-rbg.de/lighthouse/lighthouse-website
+
+before_script:
+  - npm install
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - nohup node server.js &
+    - curl http://127.0.0.1/check
+  when: always
