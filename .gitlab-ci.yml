@@ -11,7 +11,7 @@ stages:
 test:
   stage: test
   script:
-    - pm2 start server.js --name "songbeamer"
-    - pm2 status songbeamer
+    #- pm2 start server.js --name "songbeamer"
+    - node server.js 
     - curl http://127.0.0.1/check
   when: always
