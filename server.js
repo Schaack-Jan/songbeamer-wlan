@@ -97,6 +97,15 @@ app.post('/send', (req, res) => {
 	})
 })
 
+// Captive Portal trickery
+app.get('/generate_204', (req, res) => {
+	res.status(200).send('OK')
+	//res.status(204).send('OK')
+})
+app.get('/library/test/success.html', (req, res) => {
+	res.status(200).send('Success')
+})
+
 app.get('*', (req, res) => {
 	res.status(404).send('Not found')
 })
