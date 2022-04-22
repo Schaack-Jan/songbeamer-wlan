@@ -1,0 +1,15 @@
+image: registry.lighthouse-rbg.de/lighthouse/lighthouse-website
+
+before_script:
+  - npm install
+  - npm install -g pm2
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - pm2 start server.js --name "songbeamer"
+  when: always
