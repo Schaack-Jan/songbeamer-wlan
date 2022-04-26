@@ -33,7 +33,7 @@ if exist %env% (
                 copy /y NUL songbeamer.txt >NUL
                 echo Dateiaenderungen werden nun an den Server gesendet
                 echo Dieses Fenster bitte *NICHT* schliessen
-                powershell -file setWatch.ps1 -server "192.168.178.18"
+                PowerShell -NoProfile -ExecutionPolicy Bypass -file setWatch.ps1 -server %server%
             ) else (
                 echo Der Server '%server%' ist nicht erreichbar
             )
