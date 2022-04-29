@@ -1,8 +1,0 @@
-[Unit]
-After=network.service
-
-[Service]
-ExecStart=/usr/local/bin/hotspot-startup-script.sh
-
-[Install]
-WantedBy=default.target

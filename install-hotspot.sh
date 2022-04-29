@@ -23,6 +23,7 @@ cd "$curDir"/tmp
 
 sudo mv /etc/nodogsplash/nodogsplash.conf /etc/nodogsplash/nodogsplash.conf.original
 sudo cp "$curDir"/src/confs/nodogsplash.conf /etc/nodogsplash/nodogsplash.conf
+sudo cp "$curDir"/src/confs/nodogsplash-index.html /etc/nodogsplash/htdocs/index.html
 
 sudo "$curDir"/nodogsplash/debian/nodogsplash.service /lib/systemd/system/
 sudo systemctl enable nodogsplash
@@ -65,11 +66,11 @@ sudo cp "$curDir"/src/confs/hotspot-startup-script.sh /usr/local/bin/hotspot-sta
 sudo chown root:root /usr/local/bin/hotspot-startup-script.sh
 sudo chmod 744 /usr/local/bin/hotspot-startup-script.sh
 
-sudo cp "$curDir"/src/confs/hotspot-startup-script.service /etc/systemd/system/hotspot-startup-script.service
-sudo chmod 664 /etc/systemd/system/hotspot-startup-script.service
+sudo cp /var/www/raspap/installers/raspapd.service /lib/systemd/system/raspapd.service
+sudo chown root:root /lib/systemd/system/raspapd.service
 
 sudo systemctl daemon-reload
-sudo systemctl enable hotspot-startup-script.service
+sudo systemctl enable raspapd
 
 # shellcheck disable=SC2164
 cd "$curDir"
