@@ -102,8 +102,8 @@ app.get('/generate_204', (req, res) => {
 	res.status(200).send('OK')
 	//res.status(204).send('OK')
 })
-app.get('/library/test/success.html', (req, res) => {
-	res.status(200).send('Success')
+app.get('/hotspot-detect.html', (req, res) => {
+	res.status(200).sendFile(path.join(__dirname, 'resources/views/captive-apple.html'))
 })
 
 app.get('*', (req, res) => {
