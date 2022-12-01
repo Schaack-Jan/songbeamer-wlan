@@ -3,9 +3,11 @@ const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const fs = require('fs')
+const archiver = require('archiver')
 const socket = require('socket.io')
 const os = require('os')
 const dotenv = require('dotenv')
+const {arch} = require("os");
 
 dotenv.config();
 const PORT = process.env.PORT ? process.env.PORT : 80
@@ -52,6 +54,19 @@ fs.mkdir(path.join(__dirname, 'files'),
 	}
 );
 
+const downloadFile = __dirname + '/watchSend.zip'
+let output = fs.createWriteStream(downloadFile)
+let archive = archiver('zip')
+
+output.on('close', () => {
+	console.log((archive.pointer() / 1024 / 1024).toFixed(2) + ' total megabytes')
+	console.log('Archive has been generated and can be downloaded now.')
+})
+
+archive.pipe(output)
+archive.directory(__dirname + '/watchSend', false)
+archive.finalize()
+
 const songbeamer = __dirname + "/files/songbeamer.txt"
 let songtext = []
 
@@ -74,6 +89,10 @@ app.get('/check', (req, res) => {
 
 app.get('/info', (req, res) => {
 	res.status(200).send('Server IP: '+ip)
+})
+
+app.get('/download', function (req, res) {
+	res.download(downloadFile)
 })
 
 app.post('/send', (req, res) => {
