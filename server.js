@@ -1,4 +1,3 @@
-const PORT = 80
 const express = require('express')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
@@ -6,6 +5,10 @@ const path = require('path')
 const fs = require('fs')
 const socket = require('socket.io')
 const os = require('os')
+const dotenv = require('dotenv')
+
+dotenv.config();
+const PORT = process.env.PORT ? process.env.PORT : 80
 
 function getLogTime() {
 	date = new Date();
