@@ -21,3 +21,5 @@ sudo chown -R www-data: /var/www/
 sudo cp /var/www/songbeamer-wlan/assets/songbeamer.service /etc/systemd/system/songbeamer.service
 sudo systemctl enable songbeamer
 sudo systemctl start songbeamer
+
+sudo reboot
