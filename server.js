@@ -95,6 +95,10 @@ app.get('/download', function (req, res) {
 	res.download(downloadFile)
 })
 
+app.get('/raspap', function (req, res) {
+	res.redirect('http://10.3.141.1:8181')
+})
+
 app.post('/send', (req, res) => {
 	if (!req.files) {
 		return res.status(400).send("No files were uploaded")

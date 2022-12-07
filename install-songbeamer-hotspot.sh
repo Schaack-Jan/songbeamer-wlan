@@ -2,7 +2,7 @@
 curl -sL https://install.raspap.com | sudo bash -s -- -y
 
 sudo mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.raspap-orig
-sudo sed 's/=[[:blank:]]80/= 8080/' /etc/lighttpd/lighttpd.conf.raspap-orig > /etc/lighttpd/lighttpd.conf
+sudo sed 's/=[[:blank:]]80/= 8181/' /etc/lighttpd/lighttpd.conf.raspap-orig > /etc/lighttpd/lighttpd.conf
 sudo service lighttpd restart
 
 sudo apt-get install -y libmicrohttpd-dev
@@ -26,8 +26,10 @@ sudo cp /var/www/songbeamer-wlan/assets/080_captive_redirects.conf /etc/dnsmasq.
 sudo cp /var/www/songbeamer-wlan/assets/090_wlan0.conf /etc/dnsmasq.d/
 sudo systemctl restart dnsmasq
 
-sudo mv /etc/hostapd/hostapd.conf.orig
-sudo cp /var/www/songbeamer-wlan/assets/hostapd.conf /etc/hostapd/hostapd.conf
+sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
+sudo sed -i 's/wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=NONE/g' /etc/hostapd/hostap.conf
+sudo sed -i 's/ssid=raspi-webgui/ssid=Songbeamer/g' /etc/hostapd/hostap.conf
+sudo sed -i 's/country_code=GB/country_code=DE/g' /etc/hostapd/hostap.conf
 sudo systemctl restart hostapd
 
 sudo rm -R /tmp/nodogsplash

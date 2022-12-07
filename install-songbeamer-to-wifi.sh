@@ -19,6 +19,7 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - && sudo apt-g
 
 sudo chown -R www-data: /var/www/
 
+sudo -u www-data npm --prefix /var/www/songbeamer-wlan/ install /var/www/songbeamer-wlan/
 sudo cp /var/www/songbeamer-wlan/assets/songbeamer.service /etc/systemd/system/songbeamer.service
 sudo systemctl enable songbeamer
 sudo systemctl start songbeamer
