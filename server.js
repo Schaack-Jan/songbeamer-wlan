@@ -120,13 +120,23 @@ app.post('/send', (req, res) => {
 })
 
 // Captive Portal trickery
-app.get('/generate_204', (req, res) => {
-	res.status(200).send('OK')
-	//res.status(204).send('OK')
-})
-app.get('/hotspot-detect.html', (req, res) => {
-	res.status(200).sendFile(path.join(__dirname, 'resources/views/captive-apple.html'))
-})
+	// Android
+	app.get('/generate_204', (req, res) => {
+		res.redirect(307, 'http://10.3.141.1')
+	})
+
+	// Apple
+	app.get('/hotspot-detect.html', (req, res) => {
+		res.redirect(307, 'http://10.3.141.1')
+	})
+	app.get('/library/test/success.html', (req, res) => {
+		res.redirect(307, 'http://10.3.141.1')
+	})
+
+	// Windows
+	app.get('/captiveportal/generate_204', (req, res) => {
+		res.redirect(307, 'http://10.3.141.1')
+	})
 
 app.get('*', (req, res) => {
 	res.status(404).send('Not found')
