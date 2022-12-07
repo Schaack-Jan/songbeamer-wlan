@@ -5,8 +5,9 @@ sudo sudo rfkill unblock wifi
 sudo apt update && sudo apt full-upgrade -y
 sudo apt --purge autoremove -y
 sudo apt install -y git
+sudo mkdir /var/www
 
-sudo git clone https://gitlab.lighthouse-rbg.de/lighthouse/songbeamer-wlan.git -o /var/www/songbeamer-wlan
+sudo git clone https://gitlab.lighthouse-rbg.de/lighthouse/songbeamer-wlan.git /var/www/songbeamer-wlan
 
 /bin/bash /var/www/songbeamer-wlan/install-songbeamer-hotspot.sh
 

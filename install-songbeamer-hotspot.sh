@@ -7,7 +7,7 @@ sudo service lighttpd restart
 
 sudo apt-get install -y libmicrohttpd-dev
 
-git clone https://github.com/nodogsplash/nodogsplash.git  -o /tmp/nodogsplash
+git clone https://github.com/nodogsplash/nodogsplash.git /tmp/nodogsplash
 
 # shellcheck disable=SC2164
 cd /tmp/nodogsplash
@@ -29,3 +29,5 @@ sudo systemctl restart dnsmasq
 sudo mv /etc/hostapd/hostapd.conf.orig
 sudo cp /var/www/songbeamer-wlan/assets/hostapd.conf /etc/hostapd/hostapd.conf
 sudo systemctl restart hostapd
+
+sudo rm -R /tmp/nodogsplash
