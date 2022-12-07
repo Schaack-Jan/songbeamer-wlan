@@ -27,7 +27,6 @@ sudo cp /var/www/songbeamer-wlan/assets/090_wlan0.conf /etc/dnsmasq.d/
 sudo systemctl restart dnsmasq
 
 sudo systemctl restart hostapd
-exit 0
 
 sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
 sudo sed -i 's/wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=NONE/g' /etc/hostapd/hostap.conf
