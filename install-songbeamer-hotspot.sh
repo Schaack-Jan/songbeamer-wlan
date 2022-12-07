@@ -22,7 +22,7 @@ sudo cp /tmp/nodogsplash/debian/nodogsplash.service /lib/systemd/system/
 sudo systemctl enable nodogsplash.service
 sudo systemctl start nodogsplash.service
 
-sudo cp /var/www/songbeamer-wlan/assets/080_captive_redirects.conf /etc/dnsmas.d/
+sudo cp /var/www/songbeamer-wlan/assets/080_captive_redirects.conf /etc/dnsmasq.d/
 sudo cp /var/www/songbeamer-wlan/assets/090_wlan0.conf /etc/dnsmasq.d/
 sudo systemctl restart dnsmasq
 
