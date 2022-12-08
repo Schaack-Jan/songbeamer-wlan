@@ -28,10 +28,14 @@ sudo systemctl restart dnsmasq
 
 sudo systemctl restart hostapd
 
+RANDOM=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
 sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
-sudo sed -i 's/wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=NONE/g' /etc/hostapd/hostapd.conf
+sudo sed -i 's/wpa=2/wpa=none/g' /etc/hostapd/hostapd.conf
 sudo sed -i 's/ssid=raspi-webgui/ssid=Songbeamer/g' /etc/hostapd/hostapd.conf
+sudo sed -i "s/wpa_passphrase=ChangeMe/$RANDOM/g" /etc/hostapd/hostapd.conf
 sudo sed -i 's/country_code=GB/country_code=DE/g' /etc/hostapd/hostapd.conf
+sudo sed -i 's/#ieee80211n=1/ieee80211n=1/g' /etc/hostapd/hostapd.conf
+sudo sed -i 's/#wmm_enabled=1/wmm_enabled=1/g' /etc/hostapd/hostapd.conf
 sudo systemctl restart hostapd
 
 sudo rm -R /tmp/nodogsplash
