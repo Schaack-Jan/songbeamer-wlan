@@ -29,9 +29,9 @@ sudo systemctl restart dnsmasq
 sudo systemctl restart hostapd
 
 sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
-sudo sed -i 's/wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=NONE/g' /etc/hostapd/hostap.conf
-sudo sed -i 's/ssid=raspi-webgui/ssid=Songbeamer/g' /etc/hostapd/hostap.conf
-sudo sed -i 's/country_code=GB/country_code=DE/g' /etc/hostapd/hostap.conf
+sudo sed -i 's/wpa_key_mgmt=WPA-PSK/wpa_key_mgmt=NONE/g' /etc/hostapd/hostapd.conf
+sudo sed -i 's/ssid=raspi-webgui/ssid=Songbeamer/g' /etc/hostapd/hostapd.conf
+sudo sed -i 's/country_code=GB/country_code=DE/g' /etc/hostapd/hostapd.conf
 sudo systemctl restart hostapd
 
 sudo rm -R /tmp/nodogsplash
